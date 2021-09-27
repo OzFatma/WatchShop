@@ -1,16 +1,12 @@
 ﻿using ApplicationCore.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
     public class ApplicationDbContextSeed
     {
-        public async Task SeedAsync(ApplicationDbContext dbContext)
+        public static async Task SeedAsync(ApplicationDbContext dbContext)
         {
             if (await dbContext.Categories.AnyAsync() || await dbContext.Brands.AnyAsync() || await dbContext.Products.AnyAsync()) return;
             Category cat1 = new Category() { CategoryName = "Gents" };
