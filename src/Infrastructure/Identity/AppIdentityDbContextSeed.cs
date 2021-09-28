@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ApplicationCore.Constants;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,23 +12,23 @@ namespace Infrastructure.Identity
     {
         public static async Task SeedAsync(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
-            await roleManager.CreateAsync(new IdentityRole("Admin"));//admin rolü eklendi.
+            await roleManager.CreateAsync(new IdentityRole(AuthorizationConstants.Roles.ADMINISTRATOR));//admin rolü eklendi.
             var adminUser = new ApplicationUser()
             {
-                UserName = "adminuser@example.com",
-                Email = "adminuser@example.com",
+                UserName = AuthorizationConstants.DEFAULT_ADMIN_USER,
+                Email = AuthorizationConstants.DEFAULT_ADMIN_USER,
                 EmailConfirmed = true
             };
-            await userManager.CreateAsync(adminUser, "P@ssword1");
-            await userManager.AddToRoleAsync(adminUser, "Admin");//admin ataması yapıldı
+            await userManager.CreateAsync(adminUser, AuthorizationConstants.DEFAULT_PASSWORD);
+            await userManager.AddToRoleAsync(adminUser, AuthorizationConstants.Roles.ADMINISTRATOR);//admin ataması yapıldı
 
             var demoUser = new ApplicationUser()
             {
-                UserName = "demouser@example.com",
-                Email = "demouser@example.com",
+                UserName = AuthorizationConstants.DEFAULT_DEMO_USER,
+                Email = AuthorizationConstants.DEFAULT_DEMO_USER,
                 EmailConfirmed = true
             };
-            await userManager.CreateAsync(demoUser, "P@ssword1");
+            await userManager.CreateAsync(demoUser, AuthorizationConstants.DEFAULT_PASSWORD);
 
 
         }
