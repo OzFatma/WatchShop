@@ -30,6 +30,9 @@ namespace Infrastructure.Data
             var p10 = new Product() { ProductName = "Lady-Datejust Mint Green Dial 18 Carat Yellow Gold President Watch", Description = "18kt yellow gold case with a 18kt yellow gold President bracelet. Fixed 18kt yellow gold bezel set with diamonds.", Price = 29195.00m, PictureUri = "10.jpg", Category = cat1, Brand = brand4 };
             var p11 = new Product() { ProductName = "Datejust 31 Rose Diamond Dial Automatic Ladies Steel and Everose Gold Oyster Men's Watch", Description = "Stainless steel case with a stainless steel oyster bracelet with everose gold center links. Fixed everose gold bezel set with diamonds.", Price = 16785.00m, PictureUri = "11.jpg", Category = cat2, Brand = brand4 };
             var p12 = new Product() { ProductName = "Lady-Datejust 28 Automatic Chronometer Diamond Green Dial Unisex Watch", Description = "18kt yellow gold case with a 18kt yellow gold Rolex president bracelet. Fixed fluted 18kt yellow gold bezel.", Price = 23995.00m, PictureUri = "12.jpg", Category = cat3, Brand = brand4 };
+            dbContext.AddRange(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12);
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }
