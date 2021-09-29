@@ -17,16 +17,21 @@ namespace Web.Services
         private readonly IAsyncRepository<Category> _categoryRepository;
         private readonly IAsyncRepository<Brand> _brandRepository;
 
-        public HomeViewModelService(IAsyncRepository<Product> productRepository,IAsyncRepository<Category>categoryRepository, IAsyncRepository<Brand> brandRepository)
+        public HomeViewModelService(IAsyncRepository<Product> productRepository, IAsyncRepository<Category> categoryRepository, IAsyncRepository<Brand> brandRepository)
         {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _brandRepository = brandRepository;
         }
-        public async Task<HomeViewModel> GetHomeViewModelAsync(int? categoryId, int? brandId)
+        public async Task<HomeViewModel> GetHomeViewModelAsync(int? categoryId, int? brandId, int page)
         {
             var specProducts = new ProductsFilterSpecification(categoryId, brandId);
-            var products = await _productRepository.ListAsync(specProducts);
+            var totalItemsCount = await _productRepository.CountAsync(specProducts);
+            var totalPagesCount = (int)Math.Ceiling((decimal)totalItemsCount / Constants.ITEMS_PER_PAGE);
+
+            var specPaginatedProducts = new ProductsFilterPaginatedSpecifications(categoryId, brandId,
+                (page - 1) * Constants.ITEMS_PER_PAGE, Constants.ITEMS_PER_PAGE);
+            var products = await _productRepository.ListAsync(specPaginatedProducts);
 
             var vm = new HomeViewModel()
             {
@@ -37,10 +42,19 @@ namespace Web.Services
                     PictureUri = p.PictureUri,
                     Price = p.Price
                 }).ToList(),
-                Categories=await GetCategoriesAsync(),
-                Brands=await GetBrandsAsync(),
-                CategoryId=categoryId,
-                BrandId=brandId
+                Categories = await GetCategoriesAsync(),
+                Brands = await GetBrandsAsync(),
+                CategoryId = categoryId,
+                BrandId = brandId,
+                PaginationInfo = new PaginationInfoViewModel()
+                {
+                    Page = page,
+                    TotalItems = totalItemsCount,
+                    TotalPages = totalPagesCount,
+                    ItemsOnPage = products.Count,
+                    HasPrevious = page > 1,
+                    HasNext = page < totalPagesCount
+                }
             };
             return vm;
         }
