@@ -25,6 +25,8 @@ Update-Database -Context AppIdentityDbContext
 
 Add-Migration InitialApp -Context ApplicationDbContext -OutputDir "Data/Migrations"
 
+Add-Migration BasketAnndBasketItems -Context ApplicationDbContext -OutputDir "Data/Migrations"
+
 Update-Database -Context ApplicationDbContext 
 
 
