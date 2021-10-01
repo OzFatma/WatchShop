@@ -1,4 +1,5 @@
 using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Builder;
@@ -30,7 +31,11 @@ namespace Web
                 options.UseNpgsql(
                     Configuration.GetConnectionString("ApplicationDbContext")));
             services.AddScoped(typeof(IAsyncRepository<>),typeof(EFRepository<>));
+
+            services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IHomeViewModelService, HomeViewModelService>();
+            services.AddScoped<IBasketViewModelService, BasketViewModelService>();
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)

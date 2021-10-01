@@ -34,12 +34,20 @@
 </div>
 
 <partial name="_PaginationPartial" model="Model.PaginationInfo" />
+
 @section Scripts{ 
 <script>
     $("[data-add-item-to-basket]").click(function (event) {
         event.preventDefault();
         var id = $(this).data("add-item-to-basket");
-        alert(id);
+        $.ajax({
+            url: "@Url.Action("AddItem", "Basket")",
+            type: "Post",
+            data: { productId: id, quantity: 1 },
+            success: function (data) {
+                $("#navbarBasketItemsCount").text(data.itemsCount);
+            }
+        });
     });
 </script>
 }
