@@ -46,6 +46,7 @@
             data: { productId: id, quantity: 1 },
             success: function (data) {
                 $("#navbarBasketItemsCount").text(data.itemsCount);
+                toastr.success("Product has been added to the basket.", "", { positionClass: "toast-top-center" });
             }
         });
     });
