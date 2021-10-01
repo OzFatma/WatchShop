@@ -47,23 +47,10 @@ namespace Web.Services
 
         private async Task<int> BasketItemsCountAsync()
         {
-            string userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var anonymousUserId = _httpContextAccessor.HttpContext.Request.Cookies[Constants.BASKET_COOKIENAME];
-            var buyerId = userId ?? anonymousUserId;
-            if (buyerId != null)
-            {
-                var spec = new BasketSpecification(buyerId);
-                var basket = await _basketRepository.FirstOrDefaultAsync(spec);
-
-                if (basket != null)
-                    return await _basketService.BasketItemsCountAsync(basket.Id);
-            }
-            return 0;
-
-
+            var basketId = await GetBasketIdAsync();
+            return basketId.HasValue ? await _basketService.BasketItemsCountAsync(basketId.Value) : 0;
 
         }
-
 
         public async Task<int> GetOrCreateBasketIdAsync()
         {
@@ -101,6 +88,33 @@ namespace Web.Services
             };
             return await _basketRepository.AddAsync(basket);
 
+        }
+
+        public async Task<BasketViewModel> GetBasketViewModelAsync()
+        {
+            var basketId = await GetBasketIdAsync();
+            var vm = new BasketViewModel();
+            if (!basketId.HasValue) return vm;
+
+            //todo: sepeti öğeleri ile döndür.
+
+            return null;
+        }
+
+        public async Task<int?> GetBasketIdAsync()
+        {
+            string userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var anonymousUserId = _httpContextAccessor.HttpContext.Request.Cookies[Constants.BASKET_COOKIENAME];
+            var buyerId = userId ?? anonymousUserId;
+            if (buyerId != null)
+            {
+                var spec = new BasketSpecification(buyerId);
+                var basket = await _basketRepository.FirstOrDefaultAsync(spec);
+
+                if (basket != null)
+                    return basket.Id;
+            }
+            return null;
         }
     }
 }
