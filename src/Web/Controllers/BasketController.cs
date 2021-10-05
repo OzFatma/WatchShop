@@ -18,13 +18,19 @@ namespace Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _basketViewModelService.GetBasketViewModelAsync());
         }
 
         [HttpPost]
         public async Task<IActionResult> AddItem(int productId, int quantity=1)
         {
             return Json(await _basketViewModelService.AddItemToBasketAsync(productId,quantity));
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(Dictionary<int, int> quantities)
+        {
+            return RedirectToAction("Index");
         }
     }
 }

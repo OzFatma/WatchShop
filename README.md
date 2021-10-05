@@ -29,4 +29,9 @@ Add-Migration BasketAnndBasketItems -Context ApplicationDbContext -OutputDir "Da
 
 Update-Database -Context ApplicationDbContext 
 
+### Links
+https://mdbootstrap.com/docs/b4/jquery/ecommerce/design-blocks/shopping-cart/
+
+https://stackoverflow.com/questions/65487984/asp-net-core-binding-to-a-dictionary
+
 
