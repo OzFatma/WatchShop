@@ -10,6 +10,9 @@ namespace ApplicationCore.Interfaces
     {
         Task AddItemToBasketAsync(int basketId, int productId, int quantity);
         Task<int> BasketItemsCountAsync(int basketId);
-        Task SetQuantities(int basketId, Dictionary<int, int> quantities);
+        Task SetQuantitiesAsync(int basketId, Dictionary<int, int> quantities);
+        Task RemoveBasketItemAsync(int basketId, int basketItemId);
+
+        Task DeleteBasketAsync(int basketId);
     }
 }
