@@ -96,3 +96,13 @@ body {
     width: 70px;
 }
 /* BASKET END   */
+
+.validation-summary-valid {
+    display:none;
+}
+
+.validation-summary-error > ul {
+    margin-bottom:0;
+}
+
+
